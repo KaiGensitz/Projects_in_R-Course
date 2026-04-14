@@ -15,8 +15,8 @@ This document will run the output of embedded code, generating a point figure fo
 #| warning: false
 #| cache: true
 # Use unibeCols colours (University of Bern) in R
-install.packages("remotes")
-remotes::install_github("CTU-Bern/unibeCols")
+# install.packages("remotes")
+# remotes::install_github("CTU-Bern/unibeCols")
 
 # Install packages if they aren't already installed
 if (!("tidyverse" %in% installed.packages())) install.packages("tidyverse")
