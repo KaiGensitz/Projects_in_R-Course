@@ -1,0 +1,95 @@
+---
+title: "Final Assessment Report | Projects in R Course"
+author: "Kai M. Gensitz"
+date: 14 April 2026
+format: html
+---
+
+# Code aim
+
+When you click the **Render** button, a document will run the output of embedded code, generating a point figure for different insurance charges per region from 2001 until 2005.
+
+## Install packages
+
+```{r}
+#| warning: false
+#| cache: true
+# Use unibeCols colours (University of Bern) in R
+# install.packages("remotes")
+# remotes::install_github("CTU-Bern/unibeCols")
+#file:///C:/Users/gensitz/OneDrive%20-%20Universitaet%20Bern/Desktop/Promotion/Kurse/Public%20Health/Projects%20in%20R/2026_course_slides_02_dataviz.html#/unibecols
+
+# Install packages if they aren't already installed
+if (!("tidyverse" %in% installed.packages())) install.packages("tidyverse")
+if (!("here" %in% installed.packages())) install.packages("here")
+if (!("lubridate" %in% installed.packages())) install.packages("lubridate")
+```
+
+## Load packages
+
+```{r}
+#| warning: false
+
+library(tidyverse)
+library(here)
+library(lubridate)
+library(unibeCols)
+
+```
+
+## Load the data
+
+```{r}
+#| cache: true
+# find data file
+here("insurance_with_date.csv") # find the path for the specific file
+
+# import the csv file with the path from here()
+insurance_data <- read_csv(here("data", "raw", "insurance_with_date.csv"), locale = locale(encoding = "UTF-8"))
+str(insurance_data) # display the structure of the whole data frame
+insurance_data |> distinct(region) # display all unique values for one specific variable
+```
+
+## Reformat data
+
+```{r}
+#| cache: true
+reformatted_insurance_data <- insurance_data |> 
+  select(date, region, charges) |> 
+  filter(date <= ymd("2005-12-31"))
+```
+
+## Create the point plot regarding to the charges per region
+
+```{r}
+plot_insurance_point<- ggplot(data = reformatted_insurance_data, 
+                            mapping = aes(x = date, y = charges, fill = region, colour = region)) + geom_point(alpha = 0.6, shape = 21, size = 1, stroke = 1.5) +
+  scale_fill_manual(name = "Region",
+                    breaks = c("southeast", "southwest", "northeast", "northwest"),
+                    values = c(unibeRedS()[1], unibeGreenS()[1], unibeVioletS()[1], unibeApricotS()[1]),
+                    labels = c("SE", "SW", "NE", "NW")) +
+  scale_colour_manual(name = "Region",
+                      breaks = c("southeast", "southwest", "northeast", "northwest"),
+                      values = c(unibeRedS()[1], unibeGreenS()[1], unibeVioletS()[1], unibeApricotS()[1]),
+                      labels = c("SE", "SW", "NE", "NW")) +
+  scale_x_date(breaks = ymd(c("2001-01-01", "2002-01-01", "2003-01-01", "2004-01-01", "2005-01-01", "2005-12-31")),
+               labels = c("1 Jan 2001", "1 Jan 2002", "1 Jan 2003", "1 Jan 2004", "1 Jan 2005", "31 Dec 2005"),
+               limits = ymd(c("2001-01-01", "2005-12-31"))) +
+  scale_y_continuous(breaks = seq(from = 0, to = 55000, by = 5000),
+                     limits = c(0, 55000)) +
+  ggtitle(label = "Insurance Charges per Region") +
+  xlab(label = "Time") +
+  ylab(label = "Charges") +
+  theme_bw() + theme(legend.position="bottom")  
+
+```
+
+## Print the plot
+
+```{r}
+#| echo: false
+#| fig-height: 4
+#| fig-width: 6 
+#| dpi: 150
+print(plot_insurance_point)
+```
