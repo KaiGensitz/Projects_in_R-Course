@@ -7,7 +7,7 @@ format: html
 
 # Code aim
 
-When you click the **Render** button, a document will run the output of embedded code, generating a point figure for different insurance charges per region from 2001 until 2005.
+This document will run the output of embedded code, generating a point figure for different insurance charges per region from 2001 until 2005.
 
 ## Install packages
 
@@ -15,9 +15,8 @@ When you click the **Render** button, a document will run the output of embedded
 #| warning: false
 #| cache: true
 # Use unibeCols colours (University of Bern) in R
-# install.packages("remotes")
-# remotes::install_github("CTU-Bern/unibeCols")
-#file:///C:/Users/gensitz/OneDrive%20-%20Universitaet%20Bern/Desktop/Promotion/Kurse/Public%20Health/Projects%20in%20R/2026_course_slides_02_dataviz.html#/unibecols
+install.packages("remotes")
+remotes::install_github("CTU-Bern/unibeCols")
 
 # Install packages if they aren't already installed
 if (!("tidyverse" %in% installed.packages())) install.packages("tidyverse")
